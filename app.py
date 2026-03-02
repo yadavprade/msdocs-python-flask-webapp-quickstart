@@ -5,7 +5,7 @@ tracemalloc.start(25)
 import os
 
 from flask import (Flask, redirect, render_template, request,
-                   send_from_directory, url_for)
+                   send_from_directory, url_for, jsonify)
 from pathlib import Path
 def dump_memory_snapshot():
     snapshot = tracemalloc.take_snapshot()
