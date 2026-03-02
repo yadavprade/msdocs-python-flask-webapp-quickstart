@@ -34,5 +34,25 @@ def hello():
        print('Request for hello page received with no name or blank name -- redirecting')
        return redirect(url_for('index'))
 
+@app.route("/_diag/snapshot")
+def snapshot_route():
+    snapshot = tracemalloc.take_snapshot()
+    top_stats = snapshot.statistics("lineno")[:20]  # top 20 lines
+    data = []
+    for stat in top_stats:
+        frame = stat.traceback[0]
+        data.append({
+            "file": frame.filename,
+            "line": frame.lineno,
+            "size_kib": round(stat.size / 1024, 2),
+            "count": stat.count,
+        })
+    current, peak = tracemalloc.get_traced_memory()
+    return jsonify({
+        "current_bytes": current,
+        "peak_bytes": peak,
+        "top_allocations": data
+    })
+
 if __name__ == '__main__':
    app.run()
