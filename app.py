@@ -7,6 +7,9 @@ import os
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 from pathlib import Path
+def dump_memory_snapshot():
+    snapshot = tracemalloc.take_snapshot()
+    snapshot.dump("/home/site/repository/memory_snapshot.dump")
 app = Flask(__name__)
 dump_memory_snapshot()
 
@@ -30,11 +33,6 @@ def hello():
    else:
        print('Request for hello page received with no name or blank name -- redirecting')
        return redirect(url_for('index'))
-
-
-def dump_memory_snapshot():
-    snapshot = tracemalloc.take_snapshot()
-    snapshot.dump("/home/site/repository/memory_snapshot.dump")
 
 if __name__ == '__main__':
    app.run()
