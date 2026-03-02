@@ -1,8 +1,12 @@
+
+import tracemalloc
+tracemalloc.start(25)
+
 import os
 
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
-
+from pathlib import Path
 app = Flask(__name__)
 
 
@@ -27,6 +31,10 @@ def hello():
        print('Request for hello page received with no name or blank name -- redirecting')
        return redirect(url_for('index'))
 
+
+def dump_memory_snapshot():
+    snapshot = tracemalloc.take_snapshot()
+    snapshot.dump("/home/site/wwwroot/memory_snapshot.dump")
 
 if __name__ == '__main__':
    app.run()
