@@ -8,7 +8,7 @@ from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 from pathlib import Path
 app = Flask(__name__)
-
+dump_memory_snapshot()
 
 @app.route('/')
 def index():
@@ -34,7 +34,7 @@ def hello():
 
 def dump_memory_snapshot():
     snapshot = tracemalloc.take_snapshot()
-    snapshot.dump("/home/site/wwwroot/memory_snapshot.dump")
+    snapshot.dump("/home/site/repository/memory_snapshot.dump")
 
 if __name__ == '__main__':
    app.run()
